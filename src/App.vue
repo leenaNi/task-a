@@ -7,7 +7,7 @@
           <table class="table" id="tictactoe">
             <tr v-for="tr in 3" :key="'tr'+tr">
               <td height="120" width="120" align="center" valign="center" v-for="td in 3"
-               :key="'td'+td" @click="set($event)" :class="(td==tr)? ('diagonal0 row'+tr+' col'+td) : (td== (3-tr)-1)? (' diagonal1 row'+tr+' col'+td): ('row'+tr+' col'+td) "></td>
+               :key="'td'+td" @click="draw($event)" :class="(td==tr)? ('diagonal0 row'+tr+' col'+td) : (td== (3-tr)-1)? (' diagonal1 row'+tr+' col'+td): ('row'+tr+' col'+td) "></td>
             </tr>
           </table>
         </div>
@@ -42,14 +42,11 @@ export default {
     };
   },
   methods: {
-    set(e){
-      console.log(e)
+    draw(e){
       if (e.target.innerHTML !== '') {
-        console.log("Empty");
         return;
       }
       e.target.innerHTML = this.turn;
-      console.log(e.target.className);
       this.moves += 1;
       if (this.win(e.target.className)) {
         this.scores[this.turn] = this.scores[this.turn]+1;
@@ -60,24 +57,19 @@ export default {
           this.startNewGame();
       } else {
           this.turn = (this.turn === "X") ? "O" : "X";
-          // document.getElementById('turn').textContent = 'Player ' + turn;
       }
     },
     startNewGame() {
       this.moves = 0;
       this.turn = "X";
       var table = document.getElementById("tictactoe");
-      console.log("table",table)
-      console.log("table.cells",table.rows)
       for (var i = 0, row; row = table.rows[i]; i++) {
         for (var j = 0, col; col = row.cells[j]; j++) {
-          console.log(col.innerHTML);
           col.innerHTML = '';
         }
       }
     },
     win(clickedClass) {
-      console.log("Clicked Classes", clickedClass);
       // Get all cell classes
       var memberOf = clickedClass.split(/\s+/);
       for (var i = 0; i < memberOf.length; i++) {
@@ -103,8 +95,7 @@ export default {
 </script>
 <style lang="scss">
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
-</style>
-<style lang="scss">
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
